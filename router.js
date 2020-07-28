@@ -9,6 +9,20 @@
 var fs = require('fs')
 var express = require('express')
 var Members = require('./members')
+
+// Members.updateById({
+//   'id': 1,
+//   'name': 'Yuna',
+//   'gender': 0,
+//   'age': 18,
+//   'hobbies': 'Animation, music, dance'
+// }, function (err) {
+//   if (err) {
+//     return console.log('Failed to edit')
+//   }
+//   console.log('success')
+// })
+
 // 方式一 不太合理，不予采用
 // var app = require('./app')
 
@@ -88,23 +102,7 @@ router.post('/members/new', (req, res) => {
   //    - 将对象转为字符串
   //    - 把字符串写入文件
   // 3 发送响应
-  /*fs.readFile('./db.json', (err, data) => {
-    if (err) {
-      console.log("Failed to read file.")
-    }
-    var data = JSON.parse(data).members
-    // console.log(data)
-    // var obj = JSON.parse(JSON.stringify(req.body))
-
-    // fs.writeFile('./db.json', data, (err) => {
-    //   if (err) {
-    //     console.log("Failed to write file.")
-    //   }
-    // })
-    data.push(req.body)
-    console.log(data)
-  })*/
-  // var obj = JSON.parse(JSON.stringify(req.body))
+  
   Members.save(req.body, function (err) {
     if (err) {
       return res.status(500).send('Server error.')
@@ -113,7 +111,9 @@ router.post('/members/new', (req, res) => {
   })
 })
 
-router.get('/members/edit', (req, res) => {})
+router.get('/members/edit', (req, res) => {
+
+})
 
 router.post('/members/edit', (req, res) => {})
 
