@@ -71,8 +71,8 @@
           <div class="row placeholders">
             {{ each nogis }}
             <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>{{ $value }}</h4>
+              <img src="{{ $value.img }}" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>{{ $value.name }}</h4>
               <span class="text-muted">Something else</span>
             </div>
             {{ /each }}
@@ -93,7 +93,7 @@
             </div> -->
           </div>
 
-          <h2 class="sub-header">Section title</h2>
+          <h2 class="sub-header">メンバー管理</h2>
           <a href="/members/new" class="btn btn-success">添加メンバー</a>
           <div class="table-responsive">
             <table class="table table-striped">
