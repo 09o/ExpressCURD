@@ -10,19 +10,6 @@ var fs = require('fs')
 var express = require('express')
 var Members = require('./members')
 
-// Members.updateById({
-//   'id': 1,
-//   'name': 'Yuna',
-//   'gender': 0,
-//   'age': 18,
-//   'hobbies': 'Animation, music, dance'
-// }, function (err) {
-//   if (err) {
-//     return console.log('Failed to edit')
-//   }
-//   console.log('success')
-// })
-
 // 方式一 不太合理，不予采用
 // var app = require('./app')
 
@@ -78,12 +65,19 @@ router.get('/members', (req, res) => {
       return res.status(500).send('Server error.')
     }
     res.render('index.html', {
-      nogis: [
-        'Kakki',
-        'Sakura',
-        'Yuna',
-        'Mayu'
-      ],
+      nogis: [{
+        name: 'Kakki',
+        img: '/public/img/kakki.jpg'
+      }, {
+        name: 'Yuna',
+        img: '/public/img/yuna.jpg'
+      }, {
+        name: 'Mayu',
+        img: '/public/img/mayu.jpg'
+      }, {
+        name: 'Sakura',
+        img: '/public/img/sakura.jpg'
+      }],
       members: members
     })  
   })
@@ -111,13 +105,44 @@ router.post('/members/new', (req, res) => {
   })
 })
 
+// 渲染编辑页面
 router.get('/members/edit', (req, res) => {
-
+  /*1. 在客户端的列表页中处理链接问题（需要有id参数）
+  2. 获取要编辑的学生id
+  3. 渲染编辑页面
+     根据id把学生信息查找出来
+     使用模板引擎渲染页面*/
+  console.log(req)
+  Members.findById(parseInt(req.query.id), function (err, mem) {
+    if (err) {
+      return res.status(500).send('Server error.')
+    }
+    res.render('edit.html', {
+      member: mem
+    })
+  })
 })
 
-router.post('/members/edit', (req, res) => {})
+router.post('/members/edit', (req, res) => {
+  /*1. 获取表单数据
+  2. 更新
+     Members.updateById()
+  3. 发送响应*/
+  // req.body 传入的对象属性值为字符串格式
+  Members.updateById(req.body, function (err) {
+    if (err) {
+      return res.status(500).send('Server error.')
+    }
+  })
+  res.redirect('/members')
+})
 
-router.get('/members/delete', (req, res) => {})
+router.get('/members/delete', (req, res) => {
+  // 1. 获取要删除的项的id
+  // 2. 根据id执行删除操作
+  // 3. 根据操作结果发送响应数据
+  console.log(req.query.id)
+})
 
 // 导出router
 module.exports = router
