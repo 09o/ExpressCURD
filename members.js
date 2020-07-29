@@ -52,6 +52,20 @@ exports.save = function (obj, callback) {
   })
 }
 
+// 根据id获取对象
+exports.findById = function (id, callback) {
+  fs.readFile(dbPath, 'utf-8', function (err, data) {
+    if (err) {
+      return callback(err)
+    }
+    var members = JSON.parse(data).members
+    var ret = members.find(function (item) {
+      return item.id === id
+    })
+    callback(null, ret)
+  })
+}
+
 // 更新修改成员信息
 exports.updateById = function (obj, callback) {
   fs.readFile(dbPath, 'utf-8', function (err, data) {
@@ -59,6 +73,9 @@ exports.updateById = function (obj, callback) {
       return callback(err)
     }
     var members = JSON.parse(data).members
+
+    // 传入的对象的id属性值为字符串需要转换
+    obj.id = parseInt(obj.id)
     
     // 需要修改谁就将其找出来
     // ES6 中的一个数组方法：需要接收一个函数作为参数
