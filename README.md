@@ -51,3 +51,28 @@
 
 - find
 - findIndex
+
+```javascript
+var group = [
+	{id: 1, name: 'a', age: 20},
+	{id: 2, name: 'b', age: 22},
+	{id: 3, name: 'c', age: 21},
+	{id: 4, name: 'd', age: 23}
+]
+
+Array.prototype.MyFind = function (conditionFun) {
+	for (var i = 0; i < this.length; i++) {
+		if (conditionFun(this[i], i)) {
+			return this[i]
+			// return i
+		}
+	}
+}
+
+var ret = group.MyFind(function(item, index) {
+	return item.id === 3
+})
+
+console.log(ret)
+
+```
