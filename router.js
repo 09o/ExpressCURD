@@ -141,7 +141,13 @@ router.get('/members/delete', (req, res) => {
   // 1. 获取要删除的项的id
   // 2. 根据id执行删除操作
   // 3. 根据操作结果发送响应数据
-  console.log(req.query.id)
+  // console.log(typeof req.query.id)
+  Members.deleteById(parseInt(req.query.id), function(err) {
+    if (err) {
+      return res.status(500).send('Server error.')
+    }
+    res.redirect('/members')
+  })
 })
 
 // 导出router

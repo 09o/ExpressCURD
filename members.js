@@ -39,6 +39,7 @@ exports.save = function (obj, callback) {
     obj.id = members[members.length-1].id + 1
     members.push(obj)
 
+    // 将对象数据转为字符串
     var fileData = JSON.stringify({
       members: members
     })
@@ -104,8 +105,35 @@ exports.updateById = function (obj, callback) {
 }
 
 // 删除成员
-exports.delete = function() {
-  
+exports.deleteById = function(id, callback) {
+  fs.readFile(dbPath, 'utf-8', function (err, data) {
+    if (err) {
+      return callback(err)
+    }
+    // 将字符串数据转换为对象
+    var members = JSON.parse(data).members
+    
+    // 需要删除谁就将其的索引找出来
+    // ES6 中的一个数组方法：需要接收一个函数作为参数
+    // 当某个遍历项符合 item.id  === obj.id 条件的时候，
+    // findIndex会终止遍历，同时返回其索引
+    var index = members.findIndex(function (item) {
+      return item.id === id
+    })
+
+    members.splice(index, 1)
+
+    var fileData = JSON.stringify({
+      members: members
+    })
+    
+    fs.writeFile(dbPath, fileData, function (err) {
+      if (err) {
+        return callback(err)
+      }
+      callback(null)
+    })
+  })
 }
 
 // 如果需要获取一个函数中异步操作的结果
